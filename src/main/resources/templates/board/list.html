@@ -7,63 +7,59 @@
 	<title>This page is a list page</title>
 </th:block>
 
-<!-- 	layout:fragment="search" :게시글 리스트에서 특정 게시글을 검색할 수 있는 영역 -->
-<th:block layout:fragment="search">
-	<form action="#">
-		<input type="search" placeholder="Search...">
-		<button type="submit">검색하기</button>
-	</form>
-</th:block>
+<body>
+	<th:block layout:fragment="search">
+		<form action="#">
+			<input type="search" placeholder="Search...">
+			<button type="submit">검색하기</button>
+		</form>
+	</th:block>
 
 
-<!-- layout:fragment="content" :실제 Content가 들어가는 영역이다. 게시글 리스트는 보통 테이블 형태로 처리된다. -->
-<th:block layout:fragment="content">
+	<!-- layout:fragment="content" :실제 Content가 들어가는 영역이다. 게시글 리스트는 보통 테이블 형태로 처리된다. -->
+	<th:block layout:fragment="content">
 
-	<table>
-		<thead>
-			<tr>
-<!-- 			번호 바꾸기 -->
-				<th>번호</th> 
-				<th>제목</th>
-				<th>작성자</th>
-				<th>등록일</th>
-				<th>조회 수</th>
-			</tr>
-		</thead>
-		<tbody>
-<!-- 		th:if는 if 문과 동일하고, th:unless는 else 문과 동일하다. --> 
-<!-- 자바의 forEach와 유사한 기능을 한다. 여기서는 row라는 이름으로 boardList를 순환해서 데이터를 출력한다. -->
-<!-- boardList가 empty냐? no -> boardList 의 이름을 row로 하고 그 만큼 출력해라. -->
-<!-- 해당 상태를 가져와서 고유 id가 아닌 인덱스를 출력한다. -->
-			<tr th:if="${not #lists.isEmpty( boardList )}" th:each="row,rowStat : ${boardList}">
-<!-- 			row(boardList)에서 # strings.equals 함수를 사용하여 공지 여부가 'Y'로 등록된 글이라면 "공지"를 출력하고 -->
-<!-- 			'N'으로 등록된 글이라면 게시글 번호를 출력한다. -->
-				<td scope="row"
-					th:text="${#strings.equals( row.noticeYn, 'Y' ) ? '공지' : rowStat.index}">
-				</td>
-					
-				<td >
-<!-- 				파라미터 넘길 때 ()이걸로 넘기는데 /이걸로도 되는지 테스트 해보기 -->
-					<a th:href="@{/board/view( idx=${row.idx} )}" th:text="${row.title}"></a>
-				</td>
-				
+		<table>
+			<thead>
+				<tr>
+					<!-- 			번호 바꾸기 -->
+					<th>번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>등록일</th>
+					<th>조회 수</th>
+				</tr>
+			</thead>
+			<tbody>
 
-				<td th:text="${row.writer}"></td>
-<!-- 				등록 날짜를 yyyy-MM-dd 형식으로 바꿔라 -->
-				<td th:text="${#temporals.format( row.insertTime, 'yyyy-MM-dd' )}"></td>
-<!-- 				조회수 올리는 로직은 짜지 않았음.  -->
-				<td th:text="${row.viewCnt}"></td>
-			</tr>
-			
-<!-- 			비어 있다면 참, 근데 앞에 not을 붙여서 비어있지 않으면 참이 되고조건이 실행 -->
-<!-- 			즉, "boardList"가 비어있지 않으면(false) 조건이 참이 됩니다. -->
-<!-- 비어있지 않으면 조회된 결과가 없습니다. 라고 출력하라고? 이상한데 이거? -->
-			<tr th:unless="${not #lists.isEmpty( boardList )}">
-				<td colspan="5">조회된 결과가 없습니다.</td>
-			</tr>
-			
-		</tbody>
-	</table>
+				<!-- 해당 상태를 가져와서 고유 id가 아닌 인덱스를 출력한다. -->
+				<tr th:if="${not #lists.isEmpty( boardList )}"
+					th:each="row,rowStat : ${boardList}">
+					<!-- 			row(boardList)에서 # strings.equals 함수를 사용하여 공지 여부가 'Y'로 등록된 글이라면 "공지"를 출력하고 -->
+					<!-- 			'N'으로 등록된 글이라면 게시글 번호를 출력한다. -->
+					<td scope="row"
+						th:text="${#strings.equals( row.noticeYn, 'Y' ) ? '공지' : rowStat.index}">
+					</td>
 
-	
+					<td>
+						<!--파라미터 넘길 때 ()이걸로 넘기는데 /이걸로도 되는지 테스트 해보기/그냥 고유 문법인가? --> <a
+						th:href="@{/board/view( idx=${row.idx} )}" th:text="${row.title}"></a>
+					</td>
+
+
+					<td th:text="${row.writer}"></td>
+					<!-- 				등록 날짜를 yyyy-MM-dd 형식으로 바꿔라 -->
+					<td th:text="${#temporals.format( row.insertTime, 'yyyy-MM-dd' )}"></td>
+					<!-- 				조회수 올리는 로직은 짜지 않았음.  -->
+					<td th:text="${row.viewCnt}"></td>
+				</tr>
+
+				<tr th:unless="${not #lists.isEmpty( boardList )}">
+					<td colspan="5">조회된 결과가 없습니다.</td>
+				</tr>
+
+			</tbody>
+		</table>
+		<a th:href="/board/write"><button>글 쓰기</button></a>
+	</body>
 </html>

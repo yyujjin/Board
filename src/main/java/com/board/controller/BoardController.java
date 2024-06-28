@@ -20,35 +20,16 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	//id 없으면 게시글 생성하는 페이지
-	//id 있으면 게시글 가져오는 페이지  
-	@GetMapping(value = {"/board/write", "/board/view"})
-	//@RequestParam -> 뷰(게시글 리스트)에서 여기서 보낼 때 아이디(required? 는 뭐지) 보냄 -> 게시글 유무 확인하기위해
-	public String openBoardWrite(@RequestParam(value = "idx", required = false) Long idx, Model model) {
-		//고유id 없으면 dto 그대로 내보내기
-		if (idx == null) {
+	
+	//게시글 작성 
+	@GetMapping("/board/write")
+	public String openBoardWrite(Model model) {
 			model.addAttribute("board", new BoardDTO());
-		} else {
-			//고유id 있으면 작성된거 가져오기
-			BoardDTO board = boardService.getBoardDetail(idx);
-			//가져온게 null이면 리스트 보기로 이동하기 NPE 방지!
-			if (board == null) {
-				//만들어야 하는 리스트 페이지
-				return "redirect:/board/list.do";
-			}
-			//board 보내기
-			model.addAttribute("board", board);
-		}
-		
-		System.err.println("처리완료!!");
-		
-		//조회, 수정 페이지로 이동 
 		return "board/write";
-		
 	}
 	
 	
-	//게시글 등록 & 수정 시
+	//게시글 등록 
 	@PostMapping("/board/register")
 //	final을 붙여서 컴파일러가 dto 자동생성 안해도 어떻게든 생성하라고 하는건가
 	public String registerBoard(final BoardDTO params) {
@@ -59,16 +40,35 @@ public class BoardController {
 			}
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-
+			
 		} catch (Exception e) {
 			// TODO => 시스템에 문제가 발생하였다는 메시지를 전달
 		}
-
+		
 		return "redirect:/board/list";
 	}
 	
+	//게시글 상세 내용 조회
+	@GetMapping("/board/view")
+	public String openBoardDetail(@RequestParam(value = "idx", required = false) Long idx, Model model) {
+		if (idx == null) {
+			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
+			return "redirect:/board/list";
+		}
+
+		BoardDTO board = boardService.getBoardDetail(idx);
+		if (board == null || "Y".equals(board.getDeleteYn())||"Y".equals(board.getSecretYn())) {
+			// TODO => 없는 게시글이거나, 이미 삭제된 게시글,비밀 글이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
+			return "redirect:/board/list";
+		}
+		model.addAttribute("board", board);
+
+		return "board/write";
+	}
 	
-	//게시글 리스트 보기 페이지 
+	
+	
+	//게시글 리스트 보기
 	@GetMapping("/board/list")
 	public String openBoardList(Model model) {
 		List<BoardDTO> boardList = boardService.getBoardList();
