@@ -1,5 +1,7 @@
 package com.board.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,9 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	@GetMapping("/board/write")
+	//id 없으면 게시글 생성하는 페이지
+	//id 있으면 게시글 가져오는 페이지  
+	@GetMapping(value = {"/board/write", "/board/view"})
 	//@RequestParam -> 뷰(게시글 리스트)에서 여기서 보낼 때 아이디(required? 는 뭐지) 보냄 -> 게시글 유무 확인하기위해
 	public String openBoardWrite(@RequestParam(value = "idx", required = false) Long idx, Model model) {
 		//고유id 없으면 dto 그대로 내보내기
@@ -44,6 +48,7 @@ public class BoardController {
 	}
 	
 	
+	//게시글 등록 & 수정 시
 	@PostMapping("/board/register")
 //	final을 붙여서 컴파일러가 dto 자동생성 안해도 어떻게든 생성하라고 하는건가
 	public String registerBoard(final BoardDTO params) {
@@ -63,11 +68,17 @@ public class BoardController {
 	}
 	
 	
-	
+	//게시글 리스트 보기 페이지 
 	@GetMapping("/board/list")
-	public String listTest() {
+	public String openBoardList(Model model) {
+		List<BoardDTO> boardList = boardService.getBoardList();
+		model.addAttribute("boardList", boardList);
+
 		return "board/list";
 	}
+	
+	
+	
 }
 
 
