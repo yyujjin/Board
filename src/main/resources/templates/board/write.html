@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시판 글 작성</title>
+</head>
+<body>
+	<h2>WELCOM! 게시판 글 작성!</h2>
+	<form th:action="@{/board/register}"  method="post" th:object="${board}">
+		<!--/* update의 경우 서버로 전달할 게시글 번호 (PK) */-->
+<!-- 		th:field id, name, value  다 만들어주는거래 -->
+		<input type="hidden" th:if="*{idx != null and idx > 0}" th:field="*{idx}" />
+		
+		<label >공지글 설정</label>
+		<!--가져온 데이터의 스트링이 Y라면 =>true니까 체크해라 그게 아니면 체크 해제해라. (false는 체크해제)-->
+		<input type="checkbox" th:value="*{noticeYn}" id="noticeYn" name="noticeYn" th:checked="*{#strings.equals( noticeYn, 'Y' )}" />
+		
+		<br> 
+		
+<!-- 		th:value는 표시되는 값?  -->
+		<label >비밀글 설정</label>
+		<input type="checkbox" th:value="*{secretYn}" id="secretYn" name="secretYn" th:checked="*{#strings.equals( secretYn, 'Y' )}" />
+		
+		<br>
+<!--  		th:field -> id=title, name=title ,value=title     자동으로 value 값을 표시해준건가     -->
+		<label >제목</label>
+		<input type="text" th:field="*{title}"  placeholder="제목을 입력해 주세요." />
+		
+		<br>
+		
+		<label >이름</label>
+		<input type="text" th:field="*{writer}" class="form-control" placeholder="이름을 입력해 주세요." />
+		
+		<br>
+		
+		<label >내용</label> <br>
+		<textarea th:field="*{content}"  placeholder="내용을 입력해 주세요."></textarea>
+		
+		<br>
+<!-- 		@이거 왜 붙여주는거지 -->
+		<a th:href="@{/board/list}" >뒤로가기</a>
+		
+		<br>
+		
+		<button type="submit" >저장하기</button>
+	</form>
+
+</body>
+</html>

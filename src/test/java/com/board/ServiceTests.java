@@ -22,7 +22,7 @@ public class ServiceTests {
 	public void registerBoard() {
 		BoardDTO params = new BoardDTO();
 		//idx 52를 바꿀거야. 타입이 Long 래퍼클래스라서 int-> Long 변환해야함
-		Long xLong = new Long((int)52);
+		Long xLong = new Long((int)50);
 		params.setIdx(xLong);
 		params.setTitle("피곤하다.");
 		params.setContent("삶은 힘들다");
