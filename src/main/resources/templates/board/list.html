@@ -41,7 +41,8 @@
 
 					<td>
 						<!-- 파라미터 넘길 때 ()이걸로 넘기는데 /이걸로도 되는지 테스트 해보기/그냥 고유 문법인가? --> <a
-						th:href="@{/board/view(idx=${row.idx})}" th:text="${row.title}"></a>
+						th:href="@{/board/view(idx=${row.idx})}"
+						th:text="${#strings.equals(row.secretYn, 'Y') ? '비밀글입니다.' : row.title}"></a>
 					</td>
 
 					<td th:text="${row.writer}"></td>
