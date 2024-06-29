@@ -38,6 +38,9 @@ public class BoardController {
 		if(params.getNoticeYn()!=null && params.getNoticeYn()!="N") {
 			params.setNoticeYn("Y");
 		}
+		if(params.getSecretYn()!=null && params.getSecretYn()!="N") {
+			params.setSecretYn("Y");
+		}
 		
 		try {
 			boolean isRegistered = boardService.registerBoard(params);
@@ -65,6 +68,7 @@ public class BoardController {
 		BoardDTO board = boardService.getBoardDetail(idx);
 		if (board == null || "Y".equals(board.getDeleteYn())||"Y".equals(board.getSecretYn())) {
 			// TODO => 없는 게시글이거나, 이미 삭제된 게시글,비밀 글이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
+			//클릭하자 마자 리다이렉트돼서 게시글 자체가 안들어가짐 
 			return "redirect:/board/list";
 		}
 		model.addAttribute("board", board);
