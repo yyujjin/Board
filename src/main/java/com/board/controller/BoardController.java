@@ -33,6 +33,12 @@ public class BoardController {
 	@PostMapping("/board/register")
 //	final을 붙여서 컴파일러가 dto 자동생성 안해도 어떻게든 생성하라고 하는건가
 	public String registerBoard(final BoardDTO params) {
+		
+		System.err.println("가져온 DTO : "+params.toString());
+		if(params.getNoticeYn()!=null && params.getNoticeYn()!="N") {
+			params.setNoticeYn("Y");
+		}
+		
 		try {
 			boolean isRegistered = boardService.registerBoard(params);
 			if (isRegistered == false) {

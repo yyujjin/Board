@@ -13,7 +13,7 @@
 		
 		<label >공지글 설정</label>
 		<!--가져온 데이터의 스트링이 Y라면 =>true니까 체크해라 그게 아니면 체크 해제해라. (false는 체크해제)-->
-		<input type="checkbox" th:value="*{noticeYn}" id="noticeYn" name="noticeYn" th:checked="*{#strings.equals( noticeYn, 'Y' )}" />
+		<input type="checkbox" id="noticeYn" name="noticeYn" th:value="*{noticeYn}" th:checked="*{#strings.equals( noticeYn, 'Y' )}" />
 		
 		<br> 
 		
