@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.board.domain.BoardDTO;
 import com.board.service.BoardService;
-import com.mysql.cj.log.Log;
 
 @Controller
 public class BoardController {
